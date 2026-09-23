@@ -43,13 +43,13 @@
 <body>
 
   <div id="loader">
-    <img src="https://mantleunblocked.github.io/assets/full%20logo.png" alt="" draggable="false">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShrlhoZUPFN7jDh7IZB0v_zE_wIcwI7BEqWxffW8V86A&s=10" alt="" draggable="false">
     <span class="wordmark" id="loaderWordmark">COREHZ</span>
     <div class="bar"><i></i></div>
   </div>
 
   <div id="error">
-    <img src="https://mantleunblocked.github.io/assets/full%20logo.png" alt="" draggable="false"
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShrlhoZUPFN7jDh7IZB0v_zE_wIcwI7BEqWxffW8V86A&s=10" alt="" draggable="false"
          onerror="this.style.display='none';document.getElementById('errWordmark').style.display='block'">
     <span class="wordmark" id="errWordmark">COREHZ</span>
     <h1>coreHZ couldn't load</h1>
@@ -63,18 +63,14 @@
 
 <script>
 /* =======================================================================
-   MANTLE LAUNCHER — fire-and-forget shell. Never needs updating:
+   COREHZ LAUNCHER — fire-and-forget shell. Never needs updating:
    all design + functionality lives in the hub pulled from GitHub.
-   Replace USERNAME below (two places) and share this file.
    ======================================================================= */
 const CONFIG = {
   SOURCES: [
     "index.html"
   ],
-  // <base> for any RELATIVE assets the hub gains later
-  // (raw.githubusercontent serves text/plain and can't host scripts/styles).
-  BASE_HREF: "https://cdn.jsdelivr.net/gh/dobberr/mantle-menu@main/",
-  CACHE_KEY: "mantle.hub.cache.v1",
+  CACHE_KEY: "corehz.hub.cache.v1",
   SPOOF: [
     { title: "Google Docs",      icon: "https://ssl.gstatic.com/docs/documents/images/kix-favicon-2023q4.ico" },
     { title: "Google Classroom", icon: "https://www.gstatic.com/classroom/favicon.png" },
@@ -96,7 +92,7 @@ const CONFIG = {
   setInterval(apply, 1000);
 })();
 
-/* ---- if mantleassets is unreachable, degrade to a plain wordmark ---- */
+/* ---- if the placeholder image is unreachable, degrade to a plain wordmark ---- */
 document.querySelector("#loader img").addEventListener("error", function () {
   this.style.display = "none";
   document.getElementById("loaderWordmark").style.display = "block";
@@ -111,11 +107,11 @@ function getHub() {
       for (const url of CONFIG.SOURCES) {
         try {
           const res = await fetch(url, { cache: "no-cache" });
-          if (!res.ok) throw new Error("HTTP " + res.status + " from " + new URL(url).host);
+          if (!res.ok) throw new Error("HTTP " + res.status + " from " + new URL(url, location.href).host);
           const html = await res.text();
           // Reject school block pages / captive portals that return 200
-          if (html.length < 200 || !/<html/i.test(html) || !/mantle/i.test(html))
-            throw new Error("Response from " + new URL(url).host + " wasn't the hub");
+          if (html.length < 200 || !/<html/i.test(html) || !/corehz/i.test(html))
+            throw new Error("Response from " + new URL(url, location.href).host + " wasn't the coreHZ hub");
           try { localStorage.setItem(CONFIG.CACHE_KEY, html); } catch (_) {}
           return html;
         } catch (e) { lastErr = e; }
@@ -123,18 +119,13 @@ function getHub() {
       const cached = (() => { try { return localStorage.getItem(CONFIG.CACHE_KEY); } catch (_) { return null; } })();
       if (cached) return cached;
       throw lastErr || new Error("All sources failed");
-    })().catch(e => { hubPromise = null; throw e; }); // failed attempts aren't memoized
+    })().catch(e => { hubPromise = null; throw e; });
   }
   return hubPromise;
 }
 
 /* ---- write the hub into the iframe ---- */
 function install(html, doc) {
-  if (CONFIG.BASE_HREF && !/<base\s/i.test(html)) {
-    html = /<head[^>]*>/i.test(html)
-      ? html.replace(/<head[^>]*>/i, m => m + '<base href="' + CONFIG.BASE_HREF + '">')
-      : '<base href="' + CONFIG.BASE_HREF + '">' + html;
-  }
   doc.open();
   doc.write(html);
   doc.close();
@@ -160,7 +151,7 @@ async function boot() {
   } catch (e) {
     loader.style.display = "none";
     showError(e);
-    setTimeout(boot, 12000); // keep retrying quietly in the background
+    setTimeout(boot, 12000);
   } finally {
     busy = false;
   }
