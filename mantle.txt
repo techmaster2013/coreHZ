@@ -1,0 +1,13 @@
+Mantle is a website that runs as an html file you download to your computer.
+After downloading, you run the html file, and it gives you 4 options:
+1. Mineral, a Minecraft launcher.
+2. Slate, an AI.
+3. Magma, a miniature OS.
+4. The community discord server.
+
+You can find Mantle at these links:
+1. getmantle.pages.dev
+2. getmantle.vercel.app
+3. mantleunblocked.github.io
+
+coreHZ is obiously superior, though.
