@@ -65,7 +65,7 @@ function getRoutes() {
         const res = await fetch(url, { cache: "no-cache" });
         if (!res.ok) throw new Error("HTTP " + res.status);
         const text = await res.text();
-        if (text.length < 40 || !/COREHZ_ROUTES/.test(text)) throw new Error("Unexpected response");
+        if (text.length < 20 || !text.includes("{") || !text.includes("}")) throw new Error("Unexpected response");
         const parsed = parseRoutes(text);
         routesData = parsed;
         try { localStorage.setItem(ROUTES_CACHE, text); } catch (_) {}
@@ -77,7 +77,7 @@ function getRoutes() {
     // Every source unreachable: last cached copy keeps launches working
     try {
       const cached = localStorage.getItem(ROUTES_CACHE);
-      if (cached && /COREHZ_ROUTES/.test(cached)) {
+      if (cached && cached.includes("{") && cached.includes("}")) {
         routesData = parseRoutes(cached);
         return routesData;
       }
