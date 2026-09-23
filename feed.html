@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>coreHZ Feedback</title>
+    <link rel="icon" href="coreHZ.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple: #7b1fa2;
+            --violet: #673ab7;
+            --pink: #f48fb1;
+            --bg: #0d0619;
+            --panel: rgba(25, 15, 38, .94);
+            --text: #f9f6ef;
+            --muted: #aaa1b2;
+            --border: rgba(244, 143, 177, .25);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Ubuntu", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top, rgba(123,31,162,.22), transparent 34rem),
+                linear-gradient(135deg, #1a0f2e, var(--bg) 55%, #160a26);
+        }
+
+        .shell {
+            width: min(680px, 92vw);
+            margin: 0 auto;
+            padding: 55px 0 70px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 24px;
+            color: #d9cce1;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back:hover { color: white; }
+
+        .card {
+            padding: 30px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            box-shadow: 0 18px 60px rgba(0,0,0,.35);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 25px;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--purple), var(--violet));
+            font-size: 23px;
+        }
+
+        h1 {
+            margin: 0 0 4px;
+            font-size: 29px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+        }
+
+        .field {
+            display: grid;
+            gap: 8px;
+            margin: 18px 0;
+        }
+
+        label {
+            color: #ddd4e1;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 13px 14px;
+            color: var(--text);
+            background: #0f0a16;
+            border: 1px solid #382844;
+            border-radius: 12px;
+            outline: none;
+            font: inherit;
+        }
+
+        select { cursor: pointer; }
+
+        textarea {
+            min-height: 170px;
+            resize: vertical;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--pink);
+            box-shadow: 0 0 0 3px rgba(244,143,177,.12);
+        }
+
+        .hint {
+            margin-top: -8px;
+            color: #817789;
+            font-size: 12px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px 16px;
+            border: 0;
+            border-radius: 12px;
+            color: white;
+            font: inherit;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--purple), var(--violet));
+            cursor: pointer;
+        }
+
+        button:hover { filter: brightness(1.08); }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: .65;
+        }
+
+        .message {
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        .success {
+            color: #a7f2c8;
+            background: rgba(101,214,154,.1);
+            border: 1px solid rgba(101,214,154,.25);
+        }
+
+        .error {
+            color: #ffabb9;
+            background: rgba(255,107,129,.08);
+            border: 1px solid rgba(255,107,129,.22);
+        }
+
+        .hidden { display: none; }
+
+        @media (max-width: 600px) {
+            .shell { padding-top: 28px; }
+            .card { padding: 23px; }
+        }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <a class="back" href="index.html">← Back to coreHZ</a>
+
+        <section class="card">
+            <div class="brand">
+                <div class="icon">🎮</div>
+                <div>
+                    <h1>coreHZ Feedback</h1>
+                    <div class="subtitle">Help make coreHZ better.</div>
+                </div>
+            </div>
+
+            <form id="feedbackForm">
+                <div class="field">
+                    <label for="category">Category</label>
+                    <select id="category" required>
+                        <option value="bug">Bug</option>
+                        <option value="game request">Game Request</option>
+                        <option value="suggestion">Suggestion</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="game">Game <span style="color:#817789;">(optional)</span></label>
+                    <input
+                        id="game"
+                        type="text"
+                        maxlength="120"
+                        placeholder="Which game is this about?"
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="message">Feedback</label>
+                    <textarea
+                        id="message"
+                        maxlength="4000"
+                        placeholder="Tell us what you think..."
+                        required
+                    ></textarea>
+                    <div class="hint">Please don't include passwords or other private information.</div>
+                </div>
+
+                <button id="submitButton" type="submit">Submit Feedback</button>
+
+                <div id="successMessage" class="message success hidden" role="status">
+                    Thanks! Your feedback was sent. 🎉
+                </div>
+
+                <div id="errorMessage" class="message error hidden" role="alert"></div>
+            </form>
+        </section>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            Timestamp
+        } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDAd_RUXKRdXICvOGTgrC3i7_PST_BxmtE",
+            authDomain: "gplaza-feedback.firebaseapp.com",
+            projectId: "gplaza-feedback",
+            storageBucket: "gplaza-feedback.firebasestorage.app",
+            messagingSenderId: "311535800676",
+            appId: "1:311535800676:web:44bbebd348b5e3e9e66a71"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const form = document.getElementById("feedbackForm");
+        const category = document.getElementById("category");
+        const game = document.getElementById("game");
+        const message = document.getElementById("message");
+        const submitButton = document.getElementById("submitButton");
+        const successMessage = document.getElementById("successMessage");
+        const errorMessage = document.getElementById("errorMessage");
+
+        function showError(text) {
+            errorMessage.textContent = text;
+            errorMessage.classList.remove("hidden");
+            successMessage.classList.add("hidden");
+        }
+
+        function clearMessages() {
+            errorMessage.textContent = "";
+            errorMessage.classList.add("hidden");
+            successMessage.classList.add("hidden");
+        }
+
+        form.addEventListener("submit", async event => {
+            event.preventDefault();
+            clearMessages();
+
+            const cleanedMessage = message.value.trim();
+            const cleanedGame = game.value.trim();
+
+            if (!cleanedMessage) {
+                showError("Please enter some feedback.");
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = "Sending…";
+
+            try {
+                await addDoc(collection(db, "feedback"), {
+                    category: category.value,
+                    message: cleanedMessage,
+                    game: cleanedGame,
+                    source: "cHZ",
+                    status: "unresolved",
+                    createdAt: Timestamp.now()
+                });
+
+                form.reset();
+                successMessage.classList.remove("hidden");
+            } catch (error) {
+                showError(
+                    "Couldn't send your feedback right now. Please try again."
+                );
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "Submit Feedback";
+            }
+        });
+    </script>
+</body>
+</html>
