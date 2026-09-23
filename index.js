@@ -12,14 +12,8 @@
 
 /* ============================================================
    ROUTING LAYER
-   - The menu contains NO app URLs, in any form.
-   - r.txt (separate bland repo) stores each URL base64-encoded,
-     so the routing file is opaque at rest: in the repo, in
-     transit, in DevTools' response viewer, and in localStorage.
-   - Routes are fetched LAZILY: opening/inspecting the menu
-     triggers no routing request at all. Only an actual launch
-     does — and at that moment the app's own domain necessarily
-     appears in the Network tab. That part is not hideable.
+   - Routes are fetched from the public routing file and decoded
+     only when a launch is requested.
    ============================================================ */
 const ROUTE_SOURCES = [
   "https://cdn.jsdelivr.net/gh/dobberr/cfg@main/r.txt",
@@ -27,27 +21,38 @@ const ROUTE_SOURCES = [
   "https://raw.githack.com/dobberr/cfg/main/r.txt",
   "https://cdn.statically.io/gh/dobberr/cfg/main/r.txt"
 ];
-const ROUTES_CACHE = "corehz.routes.cache.v3";
+const ROUTES_CACHE = "corehz.routes.cache.v4";
 
 let routesData = null;
 let routesPromise = null;
 
-// Extracts the JSON object from the file, decodes each base64
-// value, and validates it is an https URL. Throws on anything
-// malformed — malformed data is never cached.
 function parseRoutes(text) {
   const s = text.indexOf("{");
   const e = text.lastIndexOf("}");
   if (s === -1 || e <= s) throw new Error("Malformed routing file");
+
   const raw = JSON.parse(text.slice(s, e + 1));
   const out = {};
+
   for (const k in raw) {
     let url;
-    try { url = atob(raw[k]); } catch (_) { throw new Error("Routing entry not decodable: " + k); }
-    if (!/^https:\/\//.test(url)) throw new Error("Routing entry invalid: " + k);
+    try {
+      url = atob(raw[k]);
+    } catch (_) {
+      throw new Error("Routing entry not decodable: " + k);
+    }
+
+    if (!/^https:\/\//.test(url)) {
+      throw new Error("Routing entry invalid: " + k);
+    }
+
     out[k] = url;
   }
-  if (!Object.keys(out).length) throw new Error("Routing file empty");
+
+  if (!Object.keys(out).length) {
+    throw new Error("Routing file empty");
+  }
+
   return out;
 }
 
