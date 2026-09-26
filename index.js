@@ -4,7 +4,7 @@
       if (window.__corehzBooted) return;
       var b = document.createElement("div");
       b.style.cssText = "position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:10001;background:#16161b;border:1px solid rgba(255,255,255,0.17);color:#f4f4f5;font:12.5px/1.5 Arial,sans-serif;padding:10px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.5);text-align:center;max-width:88vw";
-      b.innerHTML = "<b>coreHZ loaded an out-of-date copy.</b><br>Hold Ctrl and press R to refresh.";
+      b.innerHTML = "<b>coreHZ loaded an out-of-date copy.</b><br>Hold Ctrl and Shift, and press R to refresh.";
       (document.body || document.documentElement).appendChild(b);
     }, 2500);
 
