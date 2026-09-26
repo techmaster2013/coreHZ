@@ -339,9 +339,8 @@ function showSlateModal(onAccept) {
 }
 
 // ROUTING INITIATORS
-async function launchMineral() {
-  const url = await resolveRoute("mineral");
-  if (url) launchWithSpoof(url, false);
+function launchMineral() {
+  window.location.href = "mc.html";
 }
 async function launchSlate() {
   showSlateModal(async function() {
